@@ -1,5 +1,6 @@
 const express=require('express');
 const app=express();
+const cors=require('cors')
 
 //server port 
 const port = 3001;
@@ -8,7 +9,9 @@ const port = 3001;
 // middlewares
 app.use(express.json());
 app.use(express.urlencoded({extended:false}));
-
+app.use(cors({
+    origin:'*'
+}))
 
 // routes
 app.use(require('./routes/index'))
