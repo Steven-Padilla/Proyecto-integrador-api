@@ -7,4 +7,19 @@ CREATE TABLE users(
 	password TEXT
 )
 
-INSERT INTO users (username, email) VALUES ('STEVEN', 'steven@hotmail.com')
+
+CREATE TABLE datos(
+	id SERIAL PRIMARY KEY,
+	temp real,
+	humedad real,
+	agua real,
+	suelo real,
+	hora time, 
+	fecha date
+)
+
+CREATE TABLE regado(
+	id SERIAL PRIMARY KEY,
+	hora time, 
+	fecha date
+)

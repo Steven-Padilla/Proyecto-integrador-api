@@ -54,7 +54,7 @@ const getUsersByUsername = async (req,res) => {
 }
 
 
-const insertData =  (req,res)=>{
+const insertUser =  (req,res)=>{
     const { username,password}=req.body
     bcrypt.hash(password,cryptimes,async(err,passcrypted)=>{
         if (err) {
@@ -69,4 +69,48 @@ const insertData =  (req,res)=>{
     res.send('user was inserted')
 }
 
-module.exports={getUsers,insertData,getUsersByUsername}
+const getDatos=async (req,res)=>{
+    const response=await pool.query('SELECT * FROM datos')
+
+
+    res.send(response.rows)
+}
+
+const insertDatos=async (req,res)=>{
+    const {temp,humedad,agua,suelo}=req.body
+    const date=  new Date().toISOString()
+    fecha=date.slice(0,10)
+    hora=date.slice(11,19)
+
+    const response=await pool.query('INSERT INTO datos (temp, humedad,agua, suelo, hora, fecha) VALUES ($1,$2,$3,$4,$5,$6)',
+        [temp,humedad,agua,suelo,hora,fecha]);
+
+    console.log(response.rows)
+    res.send(response.rows)
+}
+
+
+const getRegado=async(req,res)=>{
+    const response=await pool.query('SELECT * FROM regado')
+    res.json(response.rows)
+}
+
+const insertRegado=async(req,res)=>{
+    const date=  new Date().toISOString()
+    const fecha=date.slice(0,10)
+    const hora=date.slice(11,19)
+    const response=await pool.query('INSERT INTO regado (hora,fecha) VALUES ($1,$2)',[hora,fecha])
+    res.json({
+        data:response.rows,
+        message:"Dato insertado correctamente"
+    })
+}
+module.exports={
+    getUsers,
+    insertUser,
+    getUsersByUsername,
+    getDatos,
+    insertDatos,
+    getRegado,
+    insertRegado
+}
